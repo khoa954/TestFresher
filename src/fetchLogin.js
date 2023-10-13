@@ -2,7 +2,7 @@ const fetchLogin = async ({ queryKey }) => {
   const user = { email: queryKey[1].email, password: queryKey[1].password };
   console.log(user)
   if (user.email == "" || user.password == "") {
-    throw new Error("Email or password is empty");
+    return [];
   } else {
     const resApi =await fetch(`https://reqres.in/api/login`, {
       method: "POST",
