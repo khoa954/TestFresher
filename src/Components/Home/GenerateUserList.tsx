@@ -1,10 +1,21 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Modal from "./Modal";
-import ErrorBoundary from "./ErrorBoundary";
-const GenerateUserList = ({ data }) => {
+import Modal from "../../Common/Modal";
+// import ErrorBoundary from "./ErrorBoundary";
+import { UserListApiResponse } from "../../Common/ApiResponseType";
+const GenerateUserList = ({
+  data,
+}: {
+  data: UserListApiResponse | undefined | never[];
+}) => {
   const [showModal, setShowModal] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
+  const [deleteId, setDeleteId] = useState(0);
+
+  function isNeverArray(
+    data: UserListApiResponse | undefined | never[]
+  ): data is never[] {
+    return data instanceof Array && data.length === 0;
+  }
   return (
     <div className="search">
       {showModal ? (
@@ -18,17 +29,24 @@ const GenerateUserList = ({ data }) => {
                   onClick={() => {
                     fetch(`https://reqres.in/api/users/${deleteId}`, {
                       method: "DELETE",
-                    }).then((response) => {
-                      console.log(response.status);
-                      setShowModal(false);
-                    });
+                    })
+                      .then((response) => {
+                        if (response.ok) {
+                          setDeleteId(0);
+                          setShowModal(false);
+                          alert("Delete success");
+                        }
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
                   }}
                 >
                   Yes
                 </button>
                 <button
                   onClick={() => {
-                    setDeleteId("");
+                    setDeleteId(0);
                     setShowModal(false);
                   }}
                 >
@@ -39,13 +57,13 @@ const GenerateUserList = ({ data }) => {
           </div>
         </Modal>
       ) : null}
-      {!data ? (
+      {typeof data === "undefined" || isNeverArray(data) ? (
         <h1>No user found</h1>
       ) : (
         <table>
           <thead>
             <tr>
-              <th>Id</th>
+              <th>ID</th>
               <th>First Name</th>
               <th>Last Name</th>
               <th>Email</th>
@@ -53,14 +71,16 @@ const GenerateUserList = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((user, index) => (
+            {data.data.map((user, index) => (
               <tr key={index}>
                 <td>{user.id}</td>
                 <td>{user.first_name}</td>
                 <td>{user.last_name}</td>
                 <td>{user.email}</td>
                 <td>
-                  <Link to={`/edit/${user.id}`}>Edit</Link>
+                  <Link 
+                  type="button"
+                  to={`/edit/${user.id}`}>Edit</Link>
                   <button
                     onClick={(e) => {
                       e.preventDefault();
@@ -79,11 +99,12 @@ const GenerateUserList = ({ data }) => {
     </div>
   );
 };
-function GenerateUserListErrorBoundary(props) {
-  return (
-    <ErrorBoundary>
-      <GenerateUserList {...props} />
-    </ErrorBoundary>
-  );
-}
-export default GenerateUserListErrorBoundary;
+export default GenerateUserList;
+// function GenerateUserListErrorBoundary(props:UserListApiResponse) {
+//   return (
+//     <ErrorBoundary>
+//       <GenerateUserList data={props} />
+//     </ErrorBoundary>
+//   );
+// }
+// export default GenerateUserListErrorBoundary;

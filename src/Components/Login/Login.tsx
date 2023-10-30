@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import ErrorBoundary from "./ErrorBoundary";
+import ErrorBoundary from "../Error/ErrorBoundary";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import fetchLogin from "./fetchLogin";
+import { FormLogin } from "../../Common/ApiResponseType";
 const Login = () => {
   const navigate = useNavigate();
   const [loginCount, setLoginCount] = useState(0);
@@ -23,10 +24,10 @@ const Login = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          const formData = new FormData(e.target);
-          const obj = {
-            email: formData.get("userName") ?? "",
-            password: formData.get("password") ?? "",
+          const formData = new FormData(e.currentTarget);
+          const obj: FormLogin = {
+            email: formData.get("userName")?.toString() ?? "",
+            password: formData.get("password")?.toString() ?? "",
           };
           setLoginForm(obj);
           setLoginCount((count) => count + 1);
@@ -45,10 +46,10 @@ const Login = () => {
     </div>
   );
 };
-function LoginErrorBoundary(props) {
+function LoginErrorBoundary() {
   return (
     <ErrorBoundary>
-      <Login {...props} />
+      <Login />
     </ErrorBoundary>
   );
 }

@@ -1,4 +1,9 @@
-const fetchApiListUser = async ({ queryKey }) => {
+import { QueryFunction } from "@tanstack/react-query";
+import { UserListApiResponse } from "../../Common/ApiResponseType";
+const fetchApiListUser: QueryFunction<
+  UserListApiResponse,
+  ["listUser", string]
+> = async ({ queryKey }) => {
   const token = queryKey[1];
   if (!token) {
     console.log("unauthorized");

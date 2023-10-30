@@ -11,6 +11,8 @@
   }
   
   .search-params {
+    display: flex;
+    justify-content: center;
     width: 1100px;
     margin: 0 auto;
   }
@@ -26,6 +28,8 @@
   }
   
   .search {
+    display: flex;
+    justify-content: center;
     border-radius: 6px;
     background: #faeff0;
     box-shadow: 0px 0px 12px #aaa, -0px -0px 12px #fff;
@@ -35,6 +39,28 @@
     margin-bottom: 25px;
   }
   
+  .search table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .search table th,
+  table td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  
+  .search table td {
+    border-right: 1px solid #ccc;
+  }
+  
+  .search table td:last-child {
+    border-right: none;
+  }
+
+
+
   .details {
     width: 1100px;
     margin: 0 auto;
@@ -364,3 +390,45 @@
   .mini .loader {
     font-size: 34px;
   }
+.container{
+  width: 800px;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  flex-flow: column;
+}
+  #filter{
+    width: 200px;
+    height: 30px;
+  }
+
+
+  .navbar {
+    background-color: #333;
+    padding: 10px;
+  }
+  
+  .navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .nav-item {
+    margin: 0 10px;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+
+
+
+
